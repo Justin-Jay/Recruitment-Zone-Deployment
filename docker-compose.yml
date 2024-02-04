@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+
+  recruitment-zone-db:
+    image: mysql:8.2.0
+    container_name: recruitment-zone-db
+    restart: always
+    volumes:
+      - recruitment-zone-db-vol:/var/lib/mysql
+    env_file:
+      - ./database-variables/mysql.env
+
+  recruitment-zone-application:
+    image: justinmaboshego/recruitmentzone:latest
+    container_name: recruitment-zone-application
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - recruitment-zone-db
+    volumes:
+      - recruitment-zone-application-vol:/var/log/recruitment-zone
+    env_file:
+      - ./application-variables/recruitmentzone-variables.env
+
+volumes:
+  recruitment-zone-db-vol:
+    driver: local
+  recruitment-zone-application-vol:
+    driver: local
