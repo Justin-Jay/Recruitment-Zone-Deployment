@@ -30,7 +30,6 @@ cd $backup_source_dir
 
 tar xvf $backup_source_dir/backup.tar -C $target_file_location
 
- # Copy the untarred directory into the running container
 
 docker cp $target_file_location $container_name:$target_volume_path
 
@@ -46,7 +45,6 @@ echo "Running Portainer"
 
 #source ./portainer.sh/
 
-# Add any post-startup commands here
 echo "Running post-startup tasks..."
 
 

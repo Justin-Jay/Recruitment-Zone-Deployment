@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Add any pre-startup commands here
+
 echo "Running pre-startup tasks..."
 
 source ./recruitmentzone_config.sh
