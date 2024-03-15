@@ -24,3 +24,7 @@ hs_err_pid*
 replay_pid*
 
 *.env
+
+recruitmentzone_config.sh
+recruitmentzone_backup_config.sh
+recruitmentzone_restore_config.sh

@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  file-archiver:
+    image: justinmaboshego/file-archiver:latest
+    container_name: file-archiver
+    volumes:
+      - ./tar/:/File-Archiver/Tar
+      - ./key/:/File-Archiver/Key
+      - file-archiver-test-logs-vol:/File-Archiver/Logs
+    env_file:
+      - ./var/backup.env
+
+volumes:
+   file-archiver-test-logs-vol:
+     driver: local
+     driver_opts:
+       type: none
+       o: bind
+       device: /File-Archiver/Logs

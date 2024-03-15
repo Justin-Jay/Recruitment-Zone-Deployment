@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  recruitment-zone-application-test:
+    image: justinmaboshego/recruitmentzone:latest
+    container_name: recruitment-zone-application-test
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - recruitment-zone-application-test-logs-vol:/RecruitmentZoneApplication/Logs
+      - recruitment-zone-application-test-files-vol:/RecruitmentZoneApplication/Files
+    env_file:
+      - ./var/test.env
+
+volumes:
+  recruitment-zone-application-test-logs-vol:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /RecruitmentZoneApplication/Logs
+  recruitment-zone-application-test-files-vol:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /RecruitmentZoneApplication/Files
