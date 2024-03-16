@@ -21,7 +21,7 @@ cp $secrets_source/$var_file_name* $recruitmentzone_var_dir
 
 cd $compose_dir
 
-docker-compose -f docker-compose.test.yml up -d
+docker-compose -f docker-compose.yml up -d
 
 echo "recruitmentzone has been deployed"
 
