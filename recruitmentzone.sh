@@ -19,6 +19,10 @@ sudo chown $user:$user $recruitmentzone_volume_files_mount
 
 cp $secrets_source/$var_file_name* $recruitmentzone_var_dir
 
+#cp $secrets_source/$traefik_var_file* $recruitmentzone_var_dir
+
+#cp $secrets_source/$traefik_config_file* $traefik_config_dir
+
 cd $compose_dir
 
 docker-compose -f docker-compose.yml up -d

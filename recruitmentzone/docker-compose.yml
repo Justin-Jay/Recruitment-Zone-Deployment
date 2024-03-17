@@ -11,7 +11,7 @@ services:
       - recruitment-zone-application-logs-vol:/RecruitmentZoneApplication/Logs
       - recruitment-zone-application-files-vol:/RecruitmentZoneApplication/Files
     env_file:
-      - ./var/test.env
+      - ./var/recruitmentzone.env
 
 volumes:
   recruitment-zone-application-logs-vol:

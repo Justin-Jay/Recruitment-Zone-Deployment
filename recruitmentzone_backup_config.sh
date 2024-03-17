@@ -1,5 +1,5 @@
 #!/bin/bash
-export secrets_source=/home/justin/secrets/
+export secrets_source=/home/justin/secrets/recruitmentzone/
 
 export target_backup_dir=/RecruitmentZoneBackUp/Files
 
