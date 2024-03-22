@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 echo "Running pre-startup tasks..."
 
 source ./recruitmentzone_config.sh
@@ -14,6 +13,10 @@ sudo chown $user:$user $recruitmentzone_volume_logs_mount
 sudo mkdir -p $recruitmentzone_volume_files_mount/
 
 sudo chown $user:$user $recruitmentzone_volume_files_mount
+
+sudo mkdir -p $recruitmentzone_var_dir/
+
+sudo chown $user:$user $recruitmentzone_var_dir
 
 # variables file to env location
 
