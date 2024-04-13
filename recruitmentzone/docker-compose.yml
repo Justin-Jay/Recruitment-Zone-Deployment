@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   recruitment-zone-application:
-    image: justinmaboshego/recruitmentzone:latest
+    image: justinmaboshego/recruitmentzone:${IMAGE_TAG}
     container_name: recruitment-zone-application
     restart: always
     ports:
