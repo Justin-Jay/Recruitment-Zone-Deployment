@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  archiver:
+    image: justinmaboshego/dataarchiver:1.0.0
+    container_name: archiver
+    restart: "no"
+    volumes:
+      - /Gcloud/Key/:/Gcloud/Key/:ro
+      - /data/backups/:/data/backups/:ro
+      - archiver-logs-volume:/DataArchiver/Logs/
+    env_file:
+      - ./var/BlogBackUp.env
+
+volumes:
+  archiver-logs-volume:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /DataArchiver/Logs/
