@@ -1,17 +1,33 @@
 version: '3.8'
 
 services:
+
   recruitment-zone-application:
-    image: justinmaboshego/recruitmentzone:latest
+#    image: justinmaboshego/recruitmentzone:${IMAGE_TAG}
+    image: justinmaboshego/recruitmentzone:0.0.22
     container_name: recruitment-zone-application
     restart: always
-    ports:
-      - "8080:8080"
+    #ports:
+     # - "8080:8080"
+    networks:
+      - traefik-proxy
     volumes:
       - recruitment-zone-application-logs-vol:/RecruitmentZoneApplication/Logs
       - recruitment-zone-application-files-vol:/RecruitmentZoneApplication/Files
+      - recruitment-zone-application-blog-image-vol:/RecruitmentZoneApplication/BlogImages
+      - /home/justin/Documents/Infra/secrets/dev-vars/google-key/:/Gcloud/Key/
     env_file:
       - ./var/recruitmentzone.env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.recruitmentzone-dev.rule=Host(`code.dev.recruitmentzone.co.za`)"
+      - "traefik.http.routers.recruitmentzone-dev.entrypoints=https"
+      - "traefik.http.routers.recruitmentzone-dev.tls=true"
+      - "traefik.http.services.recruitmentzone-dev.loadbalancer.server.port=8080"
+
+networks:
+  traefik-proxy:
+    external: true
 
 volumes:
   recruitment-zone-application-logs-vol:
@@ -26,3 +42,9 @@ volumes:
       type: none
       o: bind
       device: /RecruitmentZoneApplication/Files
+  recruitment-zone-application-blog-image-vol:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /RecruitmentZoneApplication/BlogImages

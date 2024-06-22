@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v3.0.0
+    container_name: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - traefik-proxy
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      CF_DNS_API_TOKEN_FILE: /run/secrets/cf_api_token # note using _FILE for docker secrets
+     # TRAEFIK_DASHBOARD_CREDENTIALS: ${TRAEFIK_DASHBOARD_CREDENTIALS} # note using _FILE for docker secrets
+ #     TRAEFIK_DASHBOARD_CREDENTIALS: ${TRAEFIK_DASHBOARD_CREDENTIALS} # note using _FILE for docker secrets
+    secrets:
+      - cf_api_token
+    env_file:
+     - ./var/traefik.env
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/traefik.yml:ro
+      - ./acme.json:/acme.json
+      #- ./dynamic.yml:/dynamic.yml:ro
+      #- traefik-logs-vol:/var/log/traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=http"
+      - "traefik.http.routers.traefik.rule=Host(`traefik-dashboard.local.recruitmentzone.co.za`)"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=justin:$$2y$$05$$SP3zMzG67PGBGA5uMaASj.nISy/XMDy2jDZy6n/gKQElgIGn7WZpC"
+      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+      - "traefik.http.routers.traefik-secure.entrypoints=https"
+      - "traefik.http.routers.traefik-secure.rule=Host(`traefik-dashboard.local.recruitmentzone.co.za`)"
+      - "traefik.http.routers.traefik-secure.middlewares=traefik-auth"
+      - "traefik.http.routers.traefik-secure.tls=true"
+      - "traefik.http.routers.traefik-secure.tls.certresolver=cloudflare"
+      - "traefik.http.routers.traefik-secure.tls.domains[0].main=local.recruitmentzone.co.za"
+      - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.local.recruitmentzone.co.za"
+      - "traefik.http.routers.traefik-secure.service=api@internal"
+
+networks:
+  traefik-proxy: # create network called proxy
+    external: true
+
+secrets:
+  cf_api_token:
+    file: secrets/cloudflare-token.secret

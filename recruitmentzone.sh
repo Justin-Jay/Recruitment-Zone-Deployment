@@ -4,7 +4,6 @@ echo "Running pre-startup tasks..."
 
 source ./recruitmentzone_config.sh
 
-#docker-compose -f docker-compose.test.yml down -v --remove-orphans
 
 sudo mkdir -p $recruitmentzone_volume_logs_mount/
 

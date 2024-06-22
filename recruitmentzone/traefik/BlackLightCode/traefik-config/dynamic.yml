@@ -1,0 +1,75 @@
+http:
+  #region routers
+  routers:
+    proxmox:
+      entryPoints:
+        - "https"
+      rule: "Host(`proxmox.local.blacklightcode.co.za`)"
+      middlewares:
+        - default-headers
+        - https-redirectscheme
+      tls: {}
+      service: proxmox
+    pi-hole:
+      entryPoints:
+        - "https"
+      rule: "Host(`pihole.local.blacklightcode.co.za`)"
+      middlewares:
+        - redirectregex-pi-hole
+        - default-headers
+        - addprefix-pi-hole
+        - https-redirectscheme
+      tls: { }
+      service: pi-hole
+
+  #endregion
+  #region services
+  services:
+    proxmox:
+      loadBalancer:
+        servers:
+          - url: "https://192.168.0.4:8006"
+        passHostHeader: true
+    pi-hole:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.0.9:80"
+        passHostHeader: true
+  #endregion
+  middlewares:
+    addprefix-pi-hole:
+      addPrefix:
+        prefix: "/admin"
+    redirectregex-pi-hole:
+      redirectRegex:
+        regex: "/admin/(.*)"
+        replacement: /
+    https-redirectscheme:
+      redirectScheme:
+        scheme: https
+        permanent: true
+
+
+    default-headers:
+      headers:
+        frameDeny: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+
+    default-whitelist:
+      ipAllowList:
+        sourceRange:
+          - "192.168.0.0/16"
+
+    secured:
+      chain:
+        middlewares:
+          - default-whitelist
+          - default-headers

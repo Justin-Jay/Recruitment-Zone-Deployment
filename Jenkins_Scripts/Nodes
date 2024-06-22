@@ -1,0 +1,36 @@
+'RecruitmentZoneWeb-Test-1':
+Jenkins user with access to docker commands
+
+Java 11/17
+Maven
+Docker & Docker-Compose
+Zip & Unzip
+gsutils / gcloud init/config
+
+Authentication:
+Git - Private(keep on server) / Pub(put on git hub) key
+
+Docker -Auth token with read write permissions
+Script: RecruitmentZoneTest: Parameters require: IMAGE_TAG default is latest , branch_name = default feature_release,
+
+=========
+
+'RecruitmentZoneWeb-Prod-1':
+Jenkins user with access to docker commands
+
+Java 11/17
+Docker & Docker-Compose
+Zip & Unzip
+gsutils / gcloud init/config
+
+Authentication:
+Git - Private(keep on server) / Pub(put on git hub) key
+
+Docker - Read Only
+
+
+Script: ProdDataArchiveJob: set cron job on Jenkins job config (0 0 * * *) should be once daily
+
+Script: RecruitmentZoneProd: Parameters require: IMAGE_TAG default is new version number created in test , branch_name = default is main,
+
+=========
