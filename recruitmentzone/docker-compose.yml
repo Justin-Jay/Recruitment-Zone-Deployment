@@ -15,6 +15,7 @@ services:
       - recruitment-zone-application-logs-vol:/RecruitmentZoneApplication/Logs
       - recruitment-zone-application-files-vol:/RecruitmentZoneApplication/Files
       - recruitment-zone-application-blog-image-vol:/RecruitmentZoneApplication/BlogImages
+      - recruitment-zone-application-vacancy-image-vol:/RecruitmentZoneApplication/VacancyImages
       - /home/justin/Documents/Infra/secrets/dev-vars/google-key/:/Gcloud/Key/
     env_file:
       - ./var/recruitmentzone.env
@@ -48,3 +49,9 @@ volumes:
       type: none
       o: bind
       device: /RecruitmentZoneApplication/BlogImages
+  recruitment-zone-application-vacancy-image-vol:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /RecruitmentZoneApplication/VacancyImages/
